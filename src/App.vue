@@ -1,17 +1,19 @@
 <template>
   <div id="app">
     <div class="header" :class="{'closed': utility == ''}">
+
       <div class="header__controls">
+        <!-- hidden to hold space for abs positioned icon -->
         <font-awesome-icon icon="search" class='hide' @click="utility = 'search'"></font-awesome-icon>
         <font-awesome-icon class="moving-icon" icon="search" :class="{'active': utility == 'search'}" @click="utility = 'search'"></font-awesome-icon>
         <img class="header__logo" @click="utility = ''" src="@/assets/icons/rocket.png" alt="">
-        <img class="header__logo" @click="utility = 'filter'" src="@/assets/icons/filter.png" alt="">
+        <img class="filter-icon" :class="{'active': utility == 'filter'}" @click="utility = 'filter'" src="@/assets/icons/filter.png" alt="">
       </div>
+
       <div class="header__utilities">
-        <transition name="modal" mode="out-in">
+        <transition name="fader" mode="out-in">
           <div v-if="utility == 'search'">
             <input  class="header__input" type="text" placeholder="Type a name" v-model="authorNameSearchString" />
-            <!-- <font-awesome-icon :class="{'active': utility == 'search'}" icon="search"></font-awesome-icon> -->
           </div>
           <Filters v-if="utility == 'filter'" @clicked="onClickChild"/>
         </transition>
@@ -21,7 +23,7 @@
     <transition-group name="list-animation" tag="div" class="cards-container">
       <Card v-for="user in filteredUserFeed" :user="user" v-bind:key="user.login.uuid" @clicked="openModal"/>
     </transition-group>
-    <transition name="modal">
+    <transition name="fader">
       <Modal v-if="loaded" v-show="modalOpen" :selectedUser="selectedUser" :show="modalOpen" @close="closeModal"/>
     </transition>
   </div>
@@ -43,7 +45,7 @@ export default {
       filter: ['name', 'first'],
       selectedUser: {},
       modalOpen: false,
-      utility: 'filter'
+      utility: ''
     }
   },
   
@@ -93,10 +95,8 @@ export default {
 
       //Now filter those results
       if(users) {
-        console.log(users[0]);
         let filter1 = vm.filter[0];
         let filter2 = vm.filter[1];
-        console.log(filter1, filter2)
         users = users.sort(function(a, b){
           if(a[filter1][filter2] < b[filter1][filter2]) { return -1; }
           if(a[filter1][filter2] > b[filter1][filter2]) { return 1; }
@@ -220,6 +220,10 @@ body {
     font-size: 1rem;
     padding: .5rem .5rem .5rem 3rem;
     margin-bottom: 1rem;
+
+    &:focus {
+      outline: 2px solid #ffa01b;
+    }
   }
 
   &::after {
@@ -252,6 +256,12 @@ body {
     font-size: 1.4rem;
     padding-bottom: 20px;
     color: rgb(0, 150, 136);
+  }
+  .filter-icon{
+    padding: 2rem 0 1rem;
+    &.active{
+      filter: brightness(10);
+    }
   }
 }
 
@@ -287,10 +297,10 @@ body {
   max-height: 80px;
 }
 
-.modal-enter-active, .modal-leave-active {
+.fader-enter-active, .fader-leave-active {
   transition: opacity .5s
 }
-.modal-enter, .modal-leave-to {
+.fader-enter, .fader-leave-to {
   opacity: 0
 }
 </style>
