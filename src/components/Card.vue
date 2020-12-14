@@ -1,8 +1,8 @@
 <template>
-    <div @click="open = !open; toggleItem()" class="card" :class="{ active: open }">
+    <div @click="open = !open;" class="card" :class="{ active: open }">
         <div class="user-overview">
             <img class="user-overview__image" :src="user.picture.large" alt="">
-            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg v-on:click.stop="callModal" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="24" cy="24" r="24" fill="#009688"/>
                 <path opacity="0.54" fill-rule="evenodd" clip-rule="evenodd" d="M15 15C14.447 15 14 15.447 14 16C14 25.388 21.612 33 31 33C31.553 33 32 32.553 32 32V28.5C32 27.948 31.553 27.501 31 27.501C29.752 27.501 28.552 27.3 27.428 26.932C27.328 26.9 27.223 26.884 27.119 26.884C26.864 26.884 26.608 26.982 26.413 27.177L24.212 29.38C21.38 27.94 19.065 25.625 17.623 22.794L19.823 20.587C20.098 20.313 20.179 19.918 20.068 19.572C19.7 18.447 19.499 17.247 19.499 16C19.499 15.447 19.052 15 18.5 15H15Z" fill="white"/>
             </svg>
@@ -51,24 +51,16 @@ export default {
     },
 
     methods: {
-        toggleItem: function() {
-            var vm = this;
-            
-            if(vm.open == true) {
-                setTimeout( function(){
-                    vm.plus = !vm.plus;
-                }, 200);
-            } else {
-                setTimeout( function(){
-                    vm.plus = !vm.plus;
-                }, 200);
-            }
+        callModal: function() {
+            const vm = this;
+            this.$emit('clicked', vm.user);
         }
     }
 }
 </script>
 
 <style lang="scss">
+
     .card {
         cursor: pointer;
         margin: 0 auto;
@@ -76,11 +68,13 @@ export default {
         max-width: 344px;
         position: relative;
         text-align: left;
+        position: relative;
         transition: all 1s;
 
         background: #FAFAFA;
         box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.12), 0px 2px 2px rgba(0, 0, 0, 0.24);
         border-radius: 3px;
+        color: #616161;
 
 
 
@@ -115,6 +109,7 @@ export default {
             align-items: center;
             height: 5.5rem;
             transition: height 1s ease;
+            position: relative;
 
             &__image {
                 position: absolute;
@@ -153,6 +148,7 @@ export default {
                 flex-direction: column;
                 padding: 2rem 1rem 2rem 30%;
                 transition: all 1s ease;
+                z-index: 5;
             }
             &__name {
                 font-size: 1.31rem;
@@ -173,6 +169,7 @@ export default {
             overflow-y: hidden;
             transition: max-height 1s ease;
             font-size: .9rem;
+            position: relative;
 
             &__section {
                 display: flex;

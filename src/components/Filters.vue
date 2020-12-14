@@ -43,11 +43,12 @@ export default {
     text-align: center;
     letter-spacing: 0.0357143em;
     color: #EEEEEE;
-
+    transition: all .5s ease;
 
     &.active {
       background: rgba(153, 153, 153, 0.5);
       border-radius: 5px;
+      transition: all .5s ease;
     }
   }
 }
