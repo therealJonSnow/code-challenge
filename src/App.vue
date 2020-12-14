@@ -1,25 +1,6 @@
 <template>
   <div id="app">
-    <div class="header" :class="{'closed': utility == ''}">
-
-      <div class="header__controls">
-        <!-- hidden to hold space for abs positioned icon -->
-        <font-awesome-icon icon="search" class='hide' @click="utility = 'search'"></font-awesome-icon>
-        <font-awesome-icon class="moving-icon" icon="search" :class="{'active': utility == 'search'}" @click="utility = 'search'"></font-awesome-icon>
-        <img class="header__logo" @click="utility = ''" src="@/assets/icons/rocket.png" alt="">
-        <img class="filter-icon" :class="{'active': utility == 'filter'}" @click="utility = 'filter'" src="@/assets/icons/filter.png" alt="">
-      </div>
-
-      <div class="header__utilities">
-        <transition name="fader" mode="out-in">
-          <div v-if="utility == 'search'">
-            <input  class="header__input" type="text" placeholder="Type a name" v-model="authorNameSearchString" />
-          </div>
-          <Filters v-if="utility == 'filter'" @clicked="onClickChild"/>
-        </transition>
-      </div>
-    </div>
-
+    <Header @searchUpdate="searchUpdate" @filterChange="filterChange"></Header>
     <transition-group name="list-animation" tag="div" class="cards-container">
       <Card v-for="user in filteredUserFeed" :user="user" v-bind:key="user.login.uuid" @clicked="openModal"/>
     </transition-group>
@@ -30,8 +11,8 @@
 </template>
 
 <script>
+import Header from './components/Header'
 import Card from './components/Card'
-import Filters from './components/Filters'
 import Modal from './components/Modal'
 import axios from 'axios'
 
@@ -44,25 +25,26 @@ export default {
       userFeed: null,
       filter: ['name', 'first'],
       selectedUser: {},
-      modalOpen: false,
-      utility: ''
+      modalOpen: false
     }
   },
   
   components: {
     Card,
-    Filters,
-    Modal
+    Modal,
+    Header
   },
 
   methods: {
-    onClickChild (value) {
-      this.filter = value
+    filterChange(value) {
+      this.filter = value;
+    },
+    searchUpdate (searchValue) {
+      this.authorNameSearchString = searchValue
     },
     openModal (user) {
       this.selectedUser = user;
       this.modalOpen = true;
-
     },
     closeModal() {
       this.modalOpen = false;
@@ -106,6 +88,7 @@ export default {
       return users;
     },
   },
+
   mounted() {
   axios
     .get('https://www.randomuser.me/api/?results=100')
@@ -120,7 +103,6 @@ export default {
     })
     .catch(error => console.log(error))
   }
-
 }
 </script>
 
@@ -151,119 +133,6 @@ body {
   flex-direction: column;
 }
 
-.hide {
-  opacity: 0;
-  transition: opacity .5s ease;
-  transition-delay: 1s;
-}
-
-.moving-icon {
-  position: absolute;
-  top: 44px;
-  transition: top .5s ease;
-  z-index: 10;
-
-  &.active {
-    top: 97px;
-    transition: top .5s ease;
-  }
-}
-
-.header {
-  background-color: #80CBC4;
-  position: relative;
-  max-height: 500px;
-  transition: all 1s;
-
-  &.closed {
-    background-color: #EEEEEE;
-  }
-  
-  &__logo {
-    padding: 2rem 0 1rem;
-  }
-
-  &__utilities{
-    max-width: 435px;
-    margin: 0 auto;
-    padding: 0 15px;
-
-    div {
-      position: relative;
-    }
-
-    svg {
-      position: absolute;
-      top: -41px;
-      left: 17px;
-      font-size: 1.4rem;
-      padding-bottom: 20px;
-      color: rgb(0, 150, 136);
-      transition: top ease .5s;
-
-      &.active {
-        top: 11px;
-        transition: top 2s ease;
-        transition-delay: 2s;
-      }
-    }
-  }
-
-  &__input {
-    background: #FCFCFC;
-    box-sizing: border-box;
-    border: none;
-    box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.12);
-    border-radius: 2px;
-    width: 100%;
-    height: 45px;
-    font-size: 1rem;
-    padding: .5rem .5rem .5rem 3rem;
-    margin-bottom: 1rem;
-
-    &:focus {
-      outline: 2px solid #ffa01b;
-    }
-  }
-
-  &::after {
-    pointer-events: none;
-    position: absolute;
-    content: '';
-    height: 100px;
-    width: 100%;
-    bottom: 0;
-    transform: translateY(100%);
-    left: 0;
-    background-image: -webkit-gradient(linear, center top, center bottom, from(rgba(0, 0, 0, 0.25)), to(rgba(77, 77, 77, 0)));
-    z-index: 100;
-  }
-
-}
-
-.header__controls {
-  max-width: 400px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  padding: 0 30px;
-
-  & * {
-    cursor: pointer;
-  }
-  svg {
-    font-size: 1.4rem;
-    padding-bottom: 20px;
-    color: rgb(0, 150, 136);
-  }
-  .filter-icon{
-    padding: 2rem 0 1rem;
-    &.active{
-      filter: brightness(10);
-    }
-  }
-}
 
 .cards-container {
   overflow-y: scroll;

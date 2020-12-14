@@ -7,7 +7,7 @@
         </svg>
 
         <div class="modal-details">
-            <p class="modal-details__name">{{ selectedUser.name.title + ' ' + selectedUser.name.first + ' ' + selectedUser.name.last}}</p>
+            <p class="modal-details__name">{{ selectedUser.name.first + ' ' + selectedUser.name.last}}</p>
             <p class="user-overview__location">Calling...</p>
         </div>
       </div>
@@ -40,32 +40,32 @@ export default {
 
 <style lang="scss">
 .modal {
-    background-size: cover;
-    background-position: center;
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    width: 100vw;
-    z-index: 100;
+  background-position: center;
+  background-size: cover;
+  height: 100vh;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  z-index: 100;
 }
 
 .modal-inner {
+  align-items: flex-end;
+  box-sizing: border-box;
   display: flex;
   justify-content: center;
-  align-items: flex-end;
-  padding: 10px;
-  box-sizing: border-box;
   margin: 75vh auto 0;
   padding: 0 30px;
+  padding: 10px;
 
   svg {
     cursor: pointer;
     transition: transform .5s ease;
 
     &:hover {
-      transform: scale(1.05);
       transform-origin: center;
+      transform: scale(1.05);
       transition: transform .5s ease;
       
       path {
@@ -77,9 +77,9 @@ export default {
 }
 
 .modal-details {
-  text-align: left;
-  margin-left: 30px;
   color: white;
+  margin-left: 30px;
+  text-align: left;
   
   &__name {
       font-size: 1.31rem;
@@ -89,6 +89,5 @@ export default {
     margin: 0;
   }
 }
-
 </style>
 

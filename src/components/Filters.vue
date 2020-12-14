@@ -1,7 +1,7 @@
 <template>
-  <div class="filter-dropdown">
+  <div class="filters">
     
-    <p class="filter active" @click="changeFilter" data-filter-parent="name" data-filter-child="first">Name</p>
+    <p class="filter filter--active" @click="changeFilter" data-filter-parent="name" data-filter-child="first">Name</p>
     <p class="filter" @click="changeFilter" data-filter-parent="name" data-filter-child="last">Surame</p>
     <p class="filter" @click="changeFilter" data-filter-parent="location" data-filter-child="country">Country</p>
 
@@ -14,10 +14,9 @@ export default {
     changeFilter (event) {
       var filters = document.getElementsByClassName('filter');
       filters.forEach(e => {
-        e.classList.remove('active');
+        e.classList.remove('filter--active');
       });
-      event.target.classList.add('active');
-      
+      event.target.classList.add('filter--active');
       this.$emit('clicked', [event.target.dataset.filterParent, event.target.dataset.filterChild] );
     }
   }
@@ -25,27 +24,26 @@ export default {
 </script>
 
 <style lang="scss">
-.filter-dropdown{
+.filters{
   display: flex;
   justify-content: center;
   padding-bottom: 1rem;
-  
 
   .filter {
+    color: #EEEEEE;
     cursor: pointer;
-    padding: .5rem;
-    margin: 0 10px;
     font-family: Roboto;
+    font-size: 14px;
     font-style: normal;
     font-weight: 500;
-    font-size: 14px;
-    line-height: 16px;
-    text-align: center;
     letter-spacing: 0.0357143em;
-    color: #EEEEEE;
+    line-height: 16px;
+    margin: 0 10px;
+    padding: .5rem;
+    text-align: center;
     transition: all .5s ease;
 
-    &.active {
+    &--active {
       background: rgba(153, 153, 153, 0.5);
       border-radius: 5px;
       transition: all .5s ease;
