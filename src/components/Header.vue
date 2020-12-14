@@ -25,18 +25,19 @@
 import Filters from './Filters'
 export default {
   name: 'Header',
+
   components: {
     Filters
   },
+
 	data() { 
     return {
       loaded: false,
       authorNameSearchString: "",
-      utility: '',
+      utility: ''
     }
   },
   
-
   methods: {
     onClickChild (value) {
       this.$emit('filterChange', value);

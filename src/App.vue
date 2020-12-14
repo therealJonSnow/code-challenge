@@ -18,6 +18,13 @@ import axios from 'axios'
 
 export default {
   name: 'App',
+
+  components: {
+    Card,
+    Modal,
+    Header
+  },
+
 	data() { 
     return {
       loaded: false,
@@ -27,12 +34,6 @@ export default {
       selectedUser: {},
       modalOpen: false
     }
-  },
-  
-  components: {
-    Card,
-    Modal,
-    Header
   },
 
   methods: {
@@ -75,7 +76,7 @@ export default {
         })
       }
 
-      //Now filter those results
+      //Now filter those results based on filter selected
       if(users) {
         let filter1 = vm.filter[0];
         let filter2 = vm.filter[1];
@@ -90,18 +91,21 @@ export default {
   },
 
   mounted() {
-  axios
-    .get('https://www.randomuser.me/api/?results=100')
-    .then(response => {
-      this.userFeed = response.data.results.sort(function(a, b){
-        if(a.name.first < b.name.first) { return -1; }
-        if(a.name.first > b.name.first) { return 1; }
-        return 0;
+    axios
+      .get('https://www.randomuser.me/api/?results=100')
+      .then(response => {
+        //Sort response alphabetically for initial display
+        this.userFeed = response.data.results.sort(function(a, b){
+          if(a.name.first < b.name.first) { return -1; }
+          if(a.name.first > b.name.first) { return 1; }
+          return 0;
+        })
+        //Pass base data to modal component so doesn't error
+        this.selectedUser = this.userFeed[0];
+        //Render modal (although still hidden)
+        this.loaded = true;
       })
-      this.selectedUser = this.userFeed[0];
-      this.loaded = true;
-    })
-    .catch(error => console.log(error))
+      .catch(error => console.log(error))
   }
 }
 </script>

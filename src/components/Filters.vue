@@ -1,15 +1,15 @@
 <template>
   <div class="filters">
-    
     <p class="filter filter--active" @click="changeFilter" data-filter-parent="name" data-filter-child="first">Name</p>
     <p class="filter" @click="changeFilter" data-filter-parent="name" data-filter-child="last">Surame</p>
     <p class="filter" @click="changeFilter" data-filter-parent="location" data-filter-child="country">Country</p>
-
   </div>
 </template>
 
 <script>
 export default {
+  name: 'Filters',
+
   methods: {
     changeFilter (event) {
       var filters = document.getElementsByClassName('filter');

@@ -17,24 +17,24 @@
 <script>
 /*jshint esversion: 6 */
 export default {
-    name: 'Modal',
+  name: 'Modal',
 
-    props: {
-        selectedUser: Object,
-        show: Boolean
-    },
+  props: {
+    selectedUser: Object,
+    show: Boolean
+  },
 
-    data: function() {
-        return {
-            open: false,
-        }
-    },
-
-    methods: {
-        closeModal: function() {
-          this.$emit('close');
-        }
+  data: function() {
+    return {
+      open: false,
     }
+  },
+
+  methods: {
+    closeModal: function() {
+      this.$emit('close');
+    }
+  }
 }
 </script>
 
